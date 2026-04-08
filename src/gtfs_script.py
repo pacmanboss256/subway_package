@@ -27,6 +27,8 @@ def validate_dates(dates:list[Date]) -> list:
 	if invalid:
 		raise ValueError(f"Found invalid dates: {invalid}")
 	else: return dates
+
+
 def get_current_gtfs(path:str="gtfs/gtfs_files/"):
     '''Download Regular GTFS Static files from MTA website and unzip'''
     URL = "https://rrgtfsfeeds.s3.amazonaws.com/gtfs_subway.zip"

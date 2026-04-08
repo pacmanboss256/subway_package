@@ -1,7 +1,8 @@
 gtfs/gtfs_files/
 gtfs/gtfs.zip
 testnotebook.ipynb
-data/*.csv
+data/
+!data/data.txt
 sodatoken.txt
 
 # Python-generated files
