@@ -1,7 +1,7 @@
 [project]
-name = "subway-package"
+name = "MTAtabase"
 version = "0.1.0"
-description = "Add your description here"
+description = "MTA GTFS parser and database system that bypasses API feeds"
 readme = "README.md"
 authors = [
     { name = "pacmanboss256", email = "pacmanboss972@gmail.com" }
@@ -14,6 +14,9 @@ dependencies = [
     "pip>=26.0.1",
     "requests>=2.33.1",
 ]
+
+license =  "GPL-3.0-or-later"
+license-files = ["LICEN[CS]E*"]
 
 [build-system]
 requires = ["uv_build>=0.9.26,<0.10.0"]

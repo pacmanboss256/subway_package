@@ -2,10 +2,8 @@ from __future__ import annotations
 import pandas as pd
 import re
 import numpy as np
-from src.utils import zip_reduce, TripDate
+from utils import zip_reduce, TripDate
 import textwrap
-from utils import get_DayType
-
 
 
 class LoggedDay:
@@ -30,7 +28,7 @@ class LoggedDay:
 		trips = raw_trips.copy()
 	
 		new_ids = zip_reduce(trips.route_id.to_list(), trips.trip_id.to_list(), lambda id, shape: '.'.join([id, re.split(r"\.",shape,maxsplit=1)[1]]))
-		trips['short_id'] = pd.Series(zip_reduce(trips.trip_id.map(lambda s: str(s).split('_')[-2]).to_list(), new_ids, lambda t, id: '_'.join([t,id]))).map(lambda s: re.sub('6X','6',s) if '6X' in s else s).map(lambda s: re.sub('SS','SI',s) if 'SS' in s else s)
+		trips['short_id'] = pd.Series(zip_reduce(trips.trip_id.map(lambda s: str(s).split('_')[-2]).to_list(), new_ids, lambda t, id: '_'.join([t,id]))).map(lambda s: re.sub('6X','6',s) if '6X' in s else s).map(lambda s: re.sub('SS','SI',s) if 'SS' in s else s) # type: ignore
 		# remove trips on end time of day since they are in the next day anyways
 		trips = trips[trips.start_time.between(self.date.start_time, self.date.end_time, inclusive='left')]
 		def tiny_exists(r):
@@ -42,12 +40,14 @@ class LoggedDay:
 				raise AttributeError
 
 		trips['tiny_id'] = trips.short_id.map(lambda s: tiny_exists(s)) # type: ignore
-		trips['start_time_formatted'] = trips.vehicle_id.map(lambda s: re.split(r"( \d+\+? ?)",s)[1].strip()).map(lambda t: ':'.join(textwrap.wrap(str(t).ljust(6,'0').replace('+','3'),2)))
+		trips['start_time_formatted'] = trips.vehicle_id.map(lambda s: re.split(r"( \d+\+? ?)",s)[1].strip()).map(lambda t: ':'.join(textwrap.wrap(str(t).ljust(6,'0').replace('+','3'),2))) # type: ignore
 		return trips
 
 	def _merge(self, trip: pd.DataFrame, stop: str) -> pd.DataFrame:
 		'''Join on stop times'''
 		stoplog = pd.read_csv(stop, dtype=str)
+
+		stoplog['arrival_time'] = stoplog['arrival_time'].fillna(stoplog['departure_time'])
 
 		## keep consistent formatting between the two, we can melt later
 		tmap = stoplog.groupby('trip_uid').apply(lambda x: np.array([list(w) for w in np.transpose(x.values)[:-2]])).reset_index() # type: ignore
@@ -62,6 +62,6 @@ class LoggedDay:
 		return self.trips[key]
 	
 	def __repr__(self) -> str:
-		return self.trips.to_string()
+		return self.trips.to_string() 
 
 

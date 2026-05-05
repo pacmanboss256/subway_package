@@ -7,7 +7,6 @@ import datetime
 import glob
 from schedule import Schedule
 from loggedtrips import LoggedDay
-from utils import get_DayType
 
 
 
@@ -24,9 +23,9 @@ class LogDict:
 		dict_r = {k: f"<loggedtrips.LoggedDay at {hex(id(v))}>" for k,v in self.logdict.items()}
 		return dict_r.__str__()
 	
-		
 class MTAtabase:
 	'''Accumulate logged_days and merge with schedule'''
+	
 	def __init__(self, data_path:str,gtfs_path:str):
 		'''
 		Params:
@@ -41,7 +40,7 @@ class MTAtabase:
 		self.arrival_logs = LogDict(data_path, self.dates)
 
 		self.schedule = Schedule(gtfs_path)
-		self.full_table = self._merge_all()
+		self.full_table = FullTable(self._merge_all())
 
 	def _merge(self, schedule: Schedule, logday: LoggedDay) -> pd.DataFrame:
 		'''Merge one day of arrival data with schedule'''
@@ -82,6 +81,31 @@ class MTAtabase:
 		for logday in list(self.arrival_logs.logdict.values()):
 			merged_days.append(self._merge(self.schedule, logday))
 		
-		ft = pd.concat(merged_days)
-		return ft.drop(['short_id_x', 'tiny_id_x'],axis=1)
+		ft = pd.concat(merged_days).drop(['short_id_x', 'tiny_id_x','last_observed', 'marked_past',
+       'num_updates', 'num_schedule_changes', 'num_schedule_rewrites', 'track', 'short_id_y', 'tiny_id_y', 'route_id_x'],axis=1).reset_index(drop=True)
+		ft.columns = ['full_trip_id', 'shape_id','day_type','sched_stops','sched_arr','sched_dep','key_id','trip_uid','logged_trip_id','route_id','direction','start_timestamp','train_id','start_time_formatted_','log_stops','log_arr','log_dep']
+		ft['log_stops'] = ft['log_stops'].map(lambda n: [str(f) for f in n])
+		ft = ft.iloc[:,[6,9,2,10,3,4,5,14,15,16,0,1,7,8,11,13,12]]
+
+		#remove duplicates
+		
+		ft['day'] = ft.start_timestamp.map(lambda s: datetime.datetime.fromtimestamp(s).toordinal())
+		ft['short']=ft.logged_trip_id.map(lambda s: re.split(r"(.*\.[NS])",s)[1])
+		ft = ft.sort_values('logged_trip_id',key=lambda col: col.str.len(), ascending=False).groupby(['shape_id','day','short']).head(1).sort_index(ignore_index=True).drop(['day','short'],axis=1)
+		
+		return ft
+
+class FullTable(pd.DataFrame):
+	'''Extension methods for full table dataframe'''
+	def __init__(self, *args, **kwargs):
+		super(FullTable,  self).__init__(*args, **kwargs)
+
+	@property
+	def _constructor(self):
+		return FullTable
+	
+	def stop_changed(self) -> pd.Series:
+		'''Checks if the scheduled stop list match the list of logged stops'''
+		return self.sched_stops != self.log_stops
+	
 	

@@ -1,4 +1,5 @@
 # About
 
-MTAtabase is a package that intends to replace partridge and peartree for MTA GTFS Static files specifically. 
-It essentially will transform the static GTFS schedule files and the GTFS realtime archive files from subwaydata.nyc which correspond to those dates into a database that can be modified and filtered via other commands.
+MTAtabase is a library intended to parse realtime MTA train data and match it to the static GTFS files without using any API connections.
+Third party data is sourced from subwaydata.nyc
+

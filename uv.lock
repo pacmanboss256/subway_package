@@ -312,6 +312,27 @@ wheels = [
 ]
 
 [[package]]
+name = "mtatabase"
+version = "0.1.0"
+source = { editable = "." }
+dependencies = [
+    { name = "ipykernel" },
+    { name = "pandas" },
+    { name = "pandas-stubs" },
+    { name = "pip" },
+    { name = "requests" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "ipykernel", specifier = ">=7.2.0" },
+    { name = "pandas", specifier = ">=3.0.2" },
+    { name = "pandas-stubs", specifier = ">=3.0.0.260204" },
+    { name = "pip", specifier = ">=26.0.1" },
+    { name = "requests", specifier = ">=2.33.1" },
+]
+
+[[package]]
 name = "nest-asyncio"
 version = "1.6.0"
 source = { registry = "https://pypi.org/simple" }
@@ -641,27 +662,6 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/28/e3/55dcc2cfbc3ca9c29519eb6884dd1415ecb53b0e934862d3559ddcb7e20b/stack_data-0.6.3.tar.gz", hash = "sha256:836a778de4fec4dcd1dcd89ed8abff8a221f58308462e1c4aa2a3cf30148f0b9", size = 44707, upload-time = "2023-09-30T13:58:05.479Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/f1/7b/ce1eafaf1a76852e2ec9b22edecf1daa58175c090266e9f6c64afcd81d91/stack_data-0.6.3-py3-none-any.whl", hash = "sha256:d5558e0c25a4cb0853cddad3d77da9891a08cb85dd9f9f91b9f8cd66e511e695", size = 24521, upload-time = "2023-09-30T13:58:03.53Z" },
-]
-
-[[package]]
-name = "subway-package"
-version = "0.1.0"
-source = { editable = "." }
-dependencies = [
-    { name = "ipykernel" },
-    { name = "pandas" },
-    { name = "pandas-stubs" },
-    { name = "pip" },
-    { name = "requests" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "ipykernel", specifier = ">=7.2.0" },
-    { name = "pandas", specifier = ">=3.0.2" },
-    { name = "pandas-stubs", specifier = ">=3.0.0.260204" },
-    { name = "pip", specifier = ">=26.0.1" },
-    { name = "requests", specifier = ">=2.33.1" },
 ]
 
 [[package]]

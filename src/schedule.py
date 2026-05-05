@@ -2,7 +2,7 @@ from __future__ import annotations
 import pandas as pd
 import re
 import numpy as np
-from src.utils import zip_reduce
+from utils import zip_reduce
 from typing import Any
 
 class Schedule:
@@ -17,7 +17,6 @@ class Schedule:
 		self.trips = self._preprocess(self._raw_trips)
 		self.duplicate_ids: dict[str, Any] = {}
 		self.lookup = self._create_lookup()
-		self.route_map = self._create_route_map()
 		self.start_date, self.end_date = [[d[:4], d[4:6], d[6:]] for d in pd.read_csv('gtfs/gtfs_files/calendar.txt')[["start_date","end_date"]].astype(str).values[0].tolist()]
 		return
 	
@@ -39,10 +38,10 @@ class Schedule:
 		times = trips.trip_id.map(lambda s: str(s).split('_')[-2]).to_list()
 		
 		# replace route ids in trip id with actual ID for 7X, W, FX, Z but not 6X for whatever reason
-		short_id_raw = pd.Series(zip_reduce(times, new_ids, lambda t, id: '_'.join([t,id]))).map(lambda s: re.sub('6X','6',s))
+		short_id_raw = pd.Series(zip_reduce(times, new_ids, lambda t, id: '_'.join([t,id]))).map(lambda s: re.sub('6X','6',s)) # type: ignore
 		
 		# fix staten island dot format
-		trips['short_id'] = short_id_raw.map(lambda s: re.sub(r"SI\.", "SI",s)).map(lambda s: re.sub(r"SS\.", "SS",s))
+		trips['short_id'] = short_id_raw.map(lambda s: re.sub(r"SI\.", "SI",s)).map(lambda s: re.sub(r"SS\.", "SS",s)) # type: ignore
 
 		return trips
 	
@@ -76,15 +75,7 @@ class Schedule:
 		
 
 		return lk
-	
-	def _create_route_map(self):
-		'''Create a table of MTA shape ids and their corresponding stop sequences'''
-		rtmap = self.lookup[['shape_id','stop']].copy()
-		rtset = set() ## set to easily drop duplicates
-		for a,b in rtmap.values:
-			rtset.add((a,tuple(b)))
-		rtd = pd.DataFrame(rtset, columns=['shape_id','routes'])
-		return rtd
+
 	
 
 	def __getitem__(self, key):
