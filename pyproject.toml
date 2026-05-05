@@ -1,6 +1,6 @@
 [project]
 name = "MTAtabase"
-version = "0.1.0"
+version = "0.1.2"
 description = "MTA GTFS parser and database system that bypasses API feeds"
 readme = "README.md"
 authors = [
@@ -8,11 +8,13 @@ authors = [
 ]
 requires-python = ">=3.13"
 dependencies = [
-    "ipykernel>=7.2.0",
+    "ipykernel>=6.2.0",
     "pandas>=3.0.2",
     "pandas-stubs>=3.0.0.260204",
     "pip>=26.0.1",
+    "pytest>=9.0.3",
     "requests>=2.33.1",
+    "twine>=6.2.0",
 ]
 
 license =  "GPL-3.0-or-later"
@@ -23,7 +25,7 @@ requires = ["uv_build>=0.9.26,<0.10.0"]
 build-backend = "uv_build"
 
 [tool.uv.build-backend]
-module-name = "src"
+module-name = "mtatabase"
 module-root = ""
 
 [tool.mypy]
