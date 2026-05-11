@@ -4,8 +4,8 @@ import re
 import numpy as np
 import datetime
 import glob
-from schedule import Schedule
-from loggedtrips import LoggedDay
+from src.mtatabase.schedule import Schedule
+from src.mtatabase.loggedtrips import LoggedDay
 
 
 

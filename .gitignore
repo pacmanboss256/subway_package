@@ -3,7 +3,7 @@ gtfs/gtfs.zip
 testnotebook.ipynb
 data/
 !data/data.txt
-sodatoken.txt
+api
 
 # Python-generated files
 __pycache__/

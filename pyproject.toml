@@ -1,7 +1,7 @@
 [project]
 name = "MTAtabase"
-version = "0.1.2"
-description = "MTA GTFS parser and database system that bypasses API feeds"
+version = "0.1.5"
+description = "MTA GTFS parser and database system that bypasses the need for API feeds"
 readme = "README.md"
 authors = [
     { name = "pacmanboss256", email = "pacmanboss972@gmail.com" }
@@ -25,7 +25,7 @@ requires = ["uv_build>=0.9.26,<0.10.0"]
 build-backend = "uv_build"
 
 [tool.uv.build-backend]
-module-name = "mtatabase"
+module-name = "MTAtabase"
 module-root = ""
 
 [tool.mypy]

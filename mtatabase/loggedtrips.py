@@ -2,7 +2,7 @@ from __future__ import annotations
 import pandas as pd
 import re
 import numpy as np
-from utils import zip_reduce, TripDate
+from src.mtatabase.utils import zip_reduce, TripDate
 import textwrap
 
 
